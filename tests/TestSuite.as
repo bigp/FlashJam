@@ -1,7 +1,7 @@
 package  {
 	import bigp.tdd.TDSuite;
 	import flash.events.Event;
-	import flashjam.core.FJ;
+	import flashjam.FJ;
 	import flashjam.objects.FJDirtyFlags;
 	import mytests.*;
 
@@ -14,6 +14,7 @@ package  {
 		public function TestSuite() {
 			super("flashjam.core");
 			coverage.addPathOfTargets("flashjam.utils");
+			coverage.addPathOfTargets("flashjam::FJ");
 			coverage.addPathOfTests("mytests");
 			
 			addEventListener(Event.ADDED, onTestAdded);

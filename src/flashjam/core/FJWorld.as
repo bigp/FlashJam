@@ -19,9 +19,11 @@ package flashjam.core {
 		private var _componentListHead:FJComponent;
 		private var _componentListTail:FJComponent;
 		
-		private var _childrenTotal:int = 0;
-		private var _entitiesTotal:int = 0;
-		private var _componentsTotal:int = 0;
+		private var _totalChildren:int = 0;
+		private var _totalEntities:int = 0;
+		private var _totalComponents:int = 0;
+		private var _totalUpdates:int = 0;
+		private var _totalDraws:int = 0;
 		
 		
 		public function FJWorld() {
@@ -72,11 +74,11 @@ package flashjam.core {
 				//Alright, start with the display-list invalidation:
 				_childrenListHead = this;
 				_childrenListTail = this;
-				_childrenTotal = 1;
+				_totalChildren = 1;
 				
 				_entitiesListHead = null;
 				_entitiesListTail = null;
-				_entitiesTotal = 0;
+				_totalEntities = 0;
 				
 				recursiveBuildDisplayList( this );
 			}
@@ -95,7 +97,7 @@ package flashjam.core {
 				
 				_componentListHead = null;
 				_componentListTail = null;
-				_componentsTotal = 0;
+				_totalComponents = 0;
 				
 				_compsDraw.length = 0;
 				_compsUpdate.length = 0;
@@ -137,20 +139,28 @@ package flashjam.core {
 		
 		
 		
-		public function update( pTime:FJTime ):void {
+		public function update( pTime:FJTime ):int {
+			_totalUpdates = 0;
+			
 			for (var i:int=0, iLen:int=_compsDraw.length; i<iLen; i++) {
 				var theComp:FJComponent = _compsDraw[i];
 				theComp.onUpdate(pTime);
+				++_totalUpdates;
 			}
+			
+			return _totalUpdates;
 		}
 		
-		public function draw( pTime:FJTime, pDraw:FJDraw ):void {
-			trace(pTime + " : " + pDraw);
+		public function draw( pTime:FJTime, pDraw:FJDraw ):int {
+			_totalDraws = 0;
 			
 			for (var i:int=0, iLen:int=_compsDraw.length; i<iLen; i++) {
 				var theComp:FJComponent = _compsDraw[i];
 				theComp.onDraw(pTime, pDraw);
+				++_totalDraws;
 			}
+			
+			return _totalDraws;
 		}
 		
 		private function sortByDraws(pA:FJComponent, pB:FJComponent):int {
@@ -181,7 +191,7 @@ package flashjam.core {
 				
 				_childrenListTail._fjDisplayListNext = child;
 				_childrenListTail = child;
-				_childrenTotal++;
+				_totalChildren++;
 				
 				if (child is FJEntity) {
 					var entity:FJEntity = child as FJEntity;
@@ -203,8 +213,8 @@ package flashjam.core {
 		public function getComponentsUpdate():Vector.<FJComponent> { return _compsUpdate; }
 		public function getComponentsDraw():Vector.<FJComponent> { return _compsDraw; }
 		
-		public function get childrenTotal():int { return _childrenTotal; }
-		public function get entitiesTotal():int { return _entitiesTotal; }
-		public function get componentsTotal():int { return _componentsTotal; }
+		public function get totalChildren():int { return _totalChildren; }
+		public function get totalEntities():int { return _totalEntities; }
+		public function get totalComponents():int { return _totalComponents; }
 	}
 }

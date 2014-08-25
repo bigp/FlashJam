@@ -1,6 +1,6 @@
 package mytests {
 	import bigp.tdd.TDNode;
-	import flashjam.core.FJ;
+	import flashjam.FJ;
 	import flashjam.objects.FJDirtyFlags;
 	
 

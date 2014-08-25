@@ -1,7 +1,7 @@
 package {
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import flashjam.core.FJ;
+	import flashjam.FJ;
 	import flashjam.core.geom.FJRect;
 	
 	/**
