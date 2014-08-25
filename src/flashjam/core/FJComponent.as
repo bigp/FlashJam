@@ -18,7 +18,6 @@ package flashjam.core {
 		internal var _entity:FJEntity;
 		internal var _priorityDraw:int = 0;
 		internal var _priorityUpdate:int = 0;
-		internal var _isConstructed:Boolean = false;
 		internal var _isActive:Boolean = true;
 		internal var _fjTransform:FJTransform;
 		
@@ -30,7 +29,6 @@ package flashjam.core {
 		
 		///////////////////////////////////////////// OVERRIDE-METHODS
 		
-		public function onConstructed():void { }
 		public function onAdded():void {
 			_fjTransform = entity._transform;
 		}

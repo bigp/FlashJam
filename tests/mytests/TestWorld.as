@@ -71,10 +71,18 @@ package mytests {
 			ASSERT_EQUAL(theWorld.update(time), 1, "num of updates 1");
 			ASSERT_EQUAL(theWorld.draw(time, draw), 1, "num of draws 1");
 			
-			theWorld.addChild( new FJSprite() );
+			var spr:FJSprite = new FJSprite();
+			theWorld.addChild( spr );
+			ASSERT_IS_NOT_NULL( spr.graphic, "sprite.graphic " );
+			ASSERT_IS_NOT_NULL( spr.physics, "sprite.physics " );
+			ASSERT_IS_NOT_NULL( spr.getComponent( FJGraphic ), "sprite has graphic" );
+			ASSERT_IS_NOT_NULL( spr.getComponent( FJPhysics ), "sprite has physics" );
+			
+			
+			ASSERT_EQUAL(theWorld.update(time), 1, "num of updates pre");
 			theWorld.invalidate();
-			ASSERT_EQUAL(theWorld.update(time), 2, "num of updates 2");
-			ASSERT_EQUAL(theWorld.draw(time, draw), 2, "num of draws 2");
+			ASSERT_EQUAL(theWorld.update(time), 2, "num of updates post");
+			ASSERT_EQUAL(theWorld.draw(time, draw), 1, "num of draws 2");
 		}
 	}
 }

@@ -152,7 +152,7 @@ package flashjam.core {
 		public function update( pTime:FJTime ):int {
 			_totalUpdates = 0;
 			
-			for (var i:int=0, iLen:int=_compsDraw.length; i<iLen; i++) {
+			for (var i:int=0, iLen:int=_compsUpdate.length; i<iLen; i++) {
 				var theComp:ICompUpdate = _compsUpdate[i];
 				theComp.onUpdate(pTime);
 				++_totalUpdates;

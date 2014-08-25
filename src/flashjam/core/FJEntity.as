@@ -29,11 +29,6 @@ package flashjam.core {
 			
 			if (pLookupCls) pComp._lookupCls = pLookupCls;
 			
-			if (!pComp._isConstructed) {
-				pComp._isConstructed = true;
-				pComp.onConstructed();
-			}
-			
 			pComp.onAdded();
 			
 			FJDirtyFlags.INSTANCE.dirtyComponentList = true;
