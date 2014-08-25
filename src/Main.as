@@ -2,6 +2,7 @@ package {
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flashjam.core.FJ;
+	import flashjam.core.geom.FJRect;
 	
 	/**
 	 * ...
@@ -15,7 +16,7 @@ package {
 		}
 		
 		private function onReady():void {
-			fj.
+			fj.drawer.drawRect(new FJRect(0, 0, 20, 20), 0xffff0000);
 		}
 	}
 }

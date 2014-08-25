@@ -140,7 +140,7 @@ package flashjam.core {
 		public function update( pTime:FJTime ):void {
 			for (var i:int=0, iLen:int=_compsDraw.length; i<iLen; i++) {
 				var theComp:FJComponent = _compsDraw[i];
-				theComp.onUpdate(pTime.timeDiff, pTime.timeNow);
+				theComp.onUpdate(pTime);
 			}
 		}
 		
@@ -149,7 +149,7 @@ package flashjam.core {
 			
 			for (var i:int=0, iLen:int=_compsDraw.length; i<iLen; i++) {
 				var theComp:FJComponent = _compsDraw[i];
-				theComp.onDraw(pTime.timeDiff, pTime.timeNow, pTime.frames);
+				theComp.onDraw(pTime, pDraw);
 			}
 		}
 		
