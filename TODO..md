@@ -1,7 +1,7 @@
 To do:
 ------  
 
-Aug. 25th, 2014
+**Aug. 25th, 2014**
 
 - world dispose (add signal)
 - quad/placeholder tests
