@@ -1,6 +1,9 @@
 package flashjam.core {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
+	import flashjam.core.geom.FJRect;
 	import flashjam.interfaces.IDisposable;
 
 	/**
@@ -9,20 +12,32 @@ package flashjam.core {
 	 */
 	public class FJDoubleBuffer implements IDisposable {
 		
+		private var _helperFillRect:Rectangle;
+		private var _helperFillAll:Rectangle;
 		private var _frontBuffer:BitmapData;
 		private var _backBuffer:BitmapData;
+		private var _helperPointZero:Point;
+		
 		public var bitmap:Bitmap;
 		
+		public var clearEachFrame:Boolean = true;
+		public var backgroundColor:uint = 0xff000000;
+		
 		public function FJDoubleBuffer(pBitmap:Bitmap, pWidth:int, pHeight:int, pTransparent:Boolean=true) {
-			bitmap = pBitmap;
+			_helperFillRect = new Rectangle();
+			_helperFillAll = new Rectangle(0, 0, pWidth, pHeight);
+			_helperPointZero = new Point();
 			
 			_frontBuffer = createBMP(pWidth, pHeight, pTransparent);
 			_backBuffer = createBMP(pWidth, pHeight, pTransparent, true);
 			
+			bitmap = pBitmap;
 			bitmap.bitmapData = _frontBuffer;
+			
+			_backBuffer.fillRect( _helperFillAll, backgroundColor);
 		}
 		
-		private function createBMP(pWidth:int, pHeight:int, pTransparent:Boolean, pLock:Boolean=false):BitmapData {
+		private static function createBMP(pWidth:int, pHeight:int, pTransparent:Boolean, pLock:Boolean=false):BitmapData {
 			var bmp:BitmapData = new BitmapData(pWidth, pHeight, pTransparent, 0xffffffff);
 			pLock && bmp.lock();
 			return bmp;
@@ -31,19 +46,18 @@ package flashjam.core {
 		public function getBackBuffer():BitmapData { return _backBuffer; }
 		
 		public function swap():void {
-			bitmap.bitmapData = _backBuffer;
-			
 			//Draw to the screen:
-			_backBuffer.unlock();
-			_frontBuffer.lock();
+			_frontBuffer.copyPixels(_backBuffer, _helperFillAll, _helperPointZero );
 			
-			var temp:BitmapData = _backBuffer;
-			_backBuffer = _frontBuffer;
-			_frontBuffer = temp;
+			//Clear the back-buffer
+			if(clearEachFrame) {
+				_backBuffer.fillRect( _helperFillAll, backgroundColor);
+			}
 		}
 		
 		public function dispose():void {
 			if (!bitmap ) return;
+			
 			bitmap.bitmapData = null;
 			bitmap = null;
 			
@@ -51,6 +65,26 @@ package flashjam.core {
 			_backBuffer.dispose();
 			_frontBuffer = null;
 			_backBuffer = null;
+			_helperFillRect = null;
+		}
+		
+		/**
+		 * Mostly used for testing purpose. Provide a rectangle / entity, and it'll draw a color of its' bounds.
+		 * @param	pRect
+		 * @param	pColor
+		 */
+		public function drawRect( pRect:FJRect, pColor:uint ):void {
+			pRect.copyToRect( _helperFillRect );
+			_backBuffer.fillRect( _helperFillRect, pColor );
+		}
+		
+		public function drawRect4(pX:Number, pY:Number, pWidth:Number, pHeight:Number, pColor:uint):void {
+			_helperFillRect.x = pX;
+			_helperFillRect.y = pY;
+			_helperFillRect.width = pWidth;
+			_helperFillRect.height = pHeight;
+			
+			_backBuffer.fillRect( _helperFillRect, pColor );
 		}
 	}
 }

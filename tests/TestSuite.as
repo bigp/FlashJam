@@ -20,7 +20,6 @@ package  {
 			addEventListener(Event.ADDED, onTestAdded);
 			addChild(new TestFJ());
 			addChild(new TestDoubleBuffer());
-			addChild(new TestDraw());
 			addChild(new TestPoint());
 			addChild(new TestRect());
 			addChild(new TestChild());

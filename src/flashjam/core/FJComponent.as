@@ -30,9 +30,11 @@ package flashjam.core {
 		
 		public function onConstructed():void { }
 		public function onAdded():void { }
-		public function onRemoved():void {}
-		public function onUpdate(pTime:FJTime):void {}
-		public function onDraw(pTime:FJTime, pDraw:FJDraw):void {}
+		public function onRemoved():void { }
+		
+		//These are now optional, must implement ICompDraw and ICompUpdate:
+		//public function onUpdate(pTime:FJTime):void {}
+		//public function onDraw(pTime:FJTime, pBuffer:FJDoubleBuffer):void {}
 		
 		///////////////////////////////////////////// GETTERS-SETTERS
 		

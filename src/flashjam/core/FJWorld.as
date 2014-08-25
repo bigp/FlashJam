@@ -1,4 +1,6 @@
 package flashjam.core {
+	import flashjam.interfaces.ICompDraw;
+	import flashjam.interfaces.ICompUpdate;
 	import flashjam.objects.FJDirtyFlags;
 
 	/**
@@ -8,8 +10,8 @@ package flashjam.core {
 	public class FJWorld extends FJGroup {
 		private var _dirty:FJDirtyFlags;
 		
-		private var _compsUpdate:Vector.<FJComponent>;
-		private var _compsDraw:Vector.<FJComponent>;
+		private var _compsUpdate:Vector.<ICompUpdate>;
+		private var _compsDraw:Vector.<ICompDraw>;
 		
 		private var _childrenListHead:FJChild;
 		private var _childrenListTail:FJChild;
@@ -31,8 +33,8 @@ package flashjam.core {
 			
 			_dirty = FJDirtyFlags.INSTANCE;
 			
-			_compsUpdate = new Vector.<FJComponent>();
-			_compsDraw = new Vector.<FJComponent>();
+			_compsUpdate = new Vector.<ICompUpdate>();
+			_compsDraw = new Vector.<ICompDraw>();
 		}
 		
 		public function onWorldBegin():void {
@@ -120,8 +122,13 @@ package flashjam.core {
 							_componentListTail = theComp;
 						}
 						
-						_compsDraw[_compsDraw.length] = theComp;
-						_compsUpdate[_compsUpdate.length] = theComp;
+						if (theComp is ICompUpdate) {
+							_compsUpdate[_compsUpdate.length] = ICompUpdate(theComp);
+						}
+						
+						if (theComp is ICompDraw) {
+							_compsDraw[_compsDraw.length] = ICompDraw(theComp);
+						}
 					}
 					
 					entity = entity._fjEntityListNext;
@@ -143,7 +150,7 @@ package flashjam.core {
 			_totalUpdates = 0;
 			
 			for (var i:int=0, iLen:int=_compsDraw.length; i<iLen; i++) {
-				var theComp:FJComponent = _compsDraw[i];
+				var theComp:ICompUpdate = _compsUpdate[i];
 				theComp.onUpdate(pTime);
 				++_totalUpdates;
 			}
@@ -151,12 +158,12 @@ package flashjam.core {
 			return _totalUpdates;
 		}
 		
-		public function draw( pTime:FJTime, pDraw:FJDraw ):int {
+		public function draw( pTime:FJTime, pBuffer:FJDoubleBuffer ):int {
 			_totalDraws = 0;
 			
 			for (var i:int=0, iLen:int=_compsDraw.length; i<iLen; i++) {
-				var theComp:FJComponent = _compsDraw[i];
-				theComp.onDraw(pTime, pDraw);
+				var theComp:ICompDraw = _compsDraw[i];
+				theComp.onDraw(pTime, pBuffer);
 				++_totalDraws;
 			}
 			
@@ -210,8 +217,8 @@ package flashjam.core {
 			}
 		}
 		
-		public function getComponentsUpdate():Vector.<FJComponent> { return _compsUpdate; }
-		public function getComponentsDraw():Vector.<FJComponent> { return _compsDraw; }
+		public function getComponentsUpdate():Vector.<ICompUpdate> { return _compsUpdate; }
+		public function getComponentsDraw():Vector.<ICompDraw> { return _compsDraw; }
 		
 		public function get totalChildren():int { return _totalChildren; }
 		public function get totalEntities():int { return _totalEntities; }

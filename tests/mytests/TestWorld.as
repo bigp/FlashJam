@@ -1,10 +1,13 @@
 package mytests {
 	import bigp.tdd.TDNode;
+	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.utils.getTimer;
-	import flashjam.core.FJChild;
+	import flashjam.basic.components.FJGraphic;
+	import flashjam.basic.components.FJPhysics;
+	import flashjam.basic.FJSprite;
 	import flashjam.core.FJComponent;
-	import flashjam.core.FJDraw;
+	import flashjam.core.FJDoubleBuffer;
 	import flashjam.core.FJEntity;
 	import flashjam.core.FJTime;
 	import flashjam.core.FJWorld;
@@ -29,8 +32,7 @@ package mytests {
 			var theWorld:FJWorld = new FJWorld();
 			var child:FJEntity = new FJEntity();
 			var time:FJTime = new FJTime(getTimer());
-			var draw:FJDraw = new FJDraw();
-			draw.setCurrentBitmap(new BitmapData(128, 128, true, 0xff888888));
+			var draw:FJDoubleBuffer = new FJDoubleBuffer(new Bitmap(), 128, 128, true);
 			
 			ASSERT_IS_NULL(theWorld.parent);
 			ASSERT_IS_NOT_NULL(theWorld.transform);
@@ -58,9 +60,22 @@ package mytests {
 			ASSERT_EQUAL(theWorld.update(time), 0);
 			theWorld.invalidate();
 			
+			//Since the above abstract classes are not ICompUpdate and ICompDraw, the count doesn't change:
+			ASSERT_EQUAL(theWorld.update(time), 0);
+			ASSERT_EQUAL(theWorld.draw(time, draw), 0);
+			
+			//Let's add some updateable/drawable components:
+			child.addComponent( new FJPhysics() );
+			child.addComponent( new FJGraphic() );
+			
+			theWorld.invalidate();
 			ASSERT_EQUAL(theWorld.update(time), 1);
 			ASSERT_EQUAL(theWorld.draw(time, draw), 1);
 			
+			theWorld.addChild( new FJSprite() );
+			theWorld.invalidate();
+			ASSERT_EQUAL(theWorld.update(time), 2);
+			ASSERT_EQUAL(theWorld.draw(time, draw), 2);
 		}
 	}
 }

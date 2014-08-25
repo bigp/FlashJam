@@ -3,6 +3,7 @@ package mytests {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flashjam.core.FJDoubleBuffer;
+	import flashjam.core.geom.FJRect;
 	
 
 	/**
@@ -48,6 +49,22 @@ package mytests {
 			
 			ASSERT_IS_NULL(dbl.bitmap);
 			ASSERT_IS_NULL(dbl.getBackBuffer());
+		}
+		
+		public function testDraw():void {
+			var bmp:Bitmap = new Bitmap();
+			stage.addChild(bmp);
+			
+			var dbl:FJDoubleBuffer = new FJDoubleBuffer(bmp, 128, 128, false);
+			
+			dbl.drawRect( new FJRect(4, 4, 10, 20), 0xffff0000 );
+			ASSERT_NOT_EQUAL( bmp.bitmapData.getPixel(10, 10).toString(16), int(0xff0000).toString(16) );
+			
+			dbl.swap();
+			ASSERT_EQUAL( bmp.bitmapData.getPixel(10, 10).toString(16), int(0xff0000).toString(16) );
+			
+			bmp.bitmapData.dispose();
+			stage.removeChild(bmp);
 		}
 	}
 }
