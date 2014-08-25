@@ -1,6 +1,7 @@
 package flashjam.core {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.PixelSnapping;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flashjam.core.geom.FJRect;
@@ -23,7 +24,7 @@ package flashjam.core {
 		public var clearEachFrame:Boolean = true;
 		public var backgroundColor:uint = 0xff000000;
 		
-		public function FJDoubleBuffer(pBitmap:Bitmap, pWidth:int, pHeight:int, pTransparent:Boolean=true) {
+		public function FJDoubleBuffer(pWidth:int, pHeight:int, pBitmap:Bitmap=null, pTransparent:Boolean=true) {
 			_helperFillRect = new Rectangle();
 			_helperFillAll = new Rectangle(0, 0, pWidth, pHeight);
 			_helperPointZero = new Point();
@@ -31,7 +32,7 @@ package flashjam.core {
 			_frontBuffer = createBMP(pWidth, pHeight, pTransparent);
 			_backBuffer = createBMP(pWidth, pHeight, pTransparent, true);
 			
-			bitmap = pBitmap;
+			bitmap = pBitmap || new Bitmap(null, PixelSnapping.NEVER, false);
 			bitmap.bitmapData = _frontBuffer;
 			
 			_backBuffer.fillRect( _helperFillAll, backgroundColor);

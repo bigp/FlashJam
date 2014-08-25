@@ -1,6 +1,5 @@
 package mytests {
 	import bigp.tdd.TDNode;
-	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.utils.getTimer;
 	import flashjam.basic.components.FJGraphic;
@@ -32,7 +31,7 @@ package mytests {
 			var theWorld:FJWorld = new FJWorld();
 			var child:FJEntity = new FJEntity();
 			var time:FJTime = new FJTime(getTimer());
-			var draw:FJDoubleBuffer = new FJDoubleBuffer(new Bitmap(), 128, 128, true);
+			var draw:FJDoubleBuffer = new FJDoubleBuffer(128, 128);
 			
 			ASSERT_IS_NULL(theWorld.parent);
 			ASSERT_IS_NOT_NULL(theWorld.transform);
@@ -66,16 +65,16 @@ package mytests {
 			
 			//Let's add some updateable/drawable components:
 			child.addComponent( new FJPhysics() );
-			child.addComponent( new FJGraphic() );
+			child.addComponent( new FJGraphic(new BitmapData(16, 16, false, 0x223344) ) );
 			
 			theWorld.invalidate();
-			ASSERT_EQUAL(theWorld.update(time), 1);
-			ASSERT_EQUAL(theWorld.draw(time, draw), 1);
+			ASSERT_EQUAL(theWorld.update(time), 1, "num of updates 1");
+			ASSERT_EQUAL(theWorld.draw(time, draw), 1, "num of draws 1");
 			
 			theWorld.addChild( new FJSprite() );
 			theWorld.invalidate();
-			ASSERT_EQUAL(theWorld.update(time), 2);
-			ASSERT_EQUAL(theWorld.draw(time, draw), 2);
+			ASSERT_EQUAL(theWorld.update(time), 2, "num of updates 2");
+			ASSERT_EQUAL(theWorld.draw(time, draw), 2, "num of draws 2");
 		}
 	}
 }

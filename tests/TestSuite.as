@@ -13,21 +13,18 @@ package  {
 		
 		public function TestSuite() {
 			super("flashjam.core");
+			coverage.addPathOfTargets("flashjam.basic");
 			coverage.addPathOfTargets("flashjam.utils");
 			coverage.addPathOfTargets("flashjam::FJ");
 			coverage.addPathOfTests("mytests");
 			
 			addEventListener(Event.ADDED, onTestAdded);
 			addChild(new TestFJ());
-			addChild(new TestDoubleBuffer());
-			addChild(new TestPoint());
-			addChild(new TestRect());
-			addChild(new TestChild());
-			addChild(new TestComponent());
-			addChild(new TestGroup());
+			addChild(new TestGeom());
+			addChild(new TestDisplayList());
 			addChild(new TestEntity());
-			addChild(new TestTime());
 			addChild(new TestWorld());
+			addChild(new TestSprite());
 		}
 		
 		private function onTestAdded(e:Event):void {

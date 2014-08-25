@@ -1,4 +1,5 @@
 package flashjam.interfaces {
+	import flashjam.core.FJEntity;
 	import flashjam.core.FJTime;
 	
 	/**
@@ -7,6 +8,7 @@ package flashjam.interfaces {
 	 */
 	public interface ICompUpdate {
 		function onUpdate(pTime:FJTime):void
+		function get entity():FJEntity
 		
 	}
 	

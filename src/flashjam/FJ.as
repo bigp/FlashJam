@@ -75,10 +75,9 @@ package flashjam {
 		private function initialize():void {
 			if (!view) view = new Rectangle(0, 0, _stage.stageWidth, _stage.stageHeight)
 			
-			var bitmap:Bitmap = new Bitmap(null, PixelSnapping.NEVER, false);
-			_root.addChild(bitmap);
+			doubleBuffer = new FJDoubleBuffer(view.width, view.height);
+			_root.addChild(doubleBuffer.bitmap);
 			
-			doubleBuffer = new FJDoubleBuffer(bitmap, view.width, view.height);
 			
 			time = new FJTime(getTimer());
 			

@@ -1,5 +1,6 @@
 package flashjam.core {
 	import flashjam.core.geom.FJRect;
+	import flashjam.core.geom.FJTransform;
 	import flashjam.objects.FJDirtyFlags;
 
 	/**
@@ -7,13 +8,13 @@ package flashjam.core {
 	 * @author Pierre Chamberlain
 	 */
 	public class FJChild {
-		private var _transform:FJRect;
+		internal var _transform:FJTransform;
 		internal var _parent:FJGroup;
 		internal var _fjDisplayListNext:FJChild;
-		private var _isActive:Boolean = true;
+		internal var _isActive:Boolean = true;
 		
 		public function FJChild(pX:Number=0, pY:Number=0) {
-			_transform = new FJRect(pX, pY);
+			_transform = new FJTransform(pX, pY);
 			
 			if (!FJDirtyFlags.INSTANCE) {
 				throw Log.__CRASH("Make sure the FJ engine is initialized, or make a mockup FJDirtyFlags object.");
@@ -47,7 +48,7 @@ package flashjam.core {
 		
 		///////////////////////////////////////////// GETTERS-SETTERS
 		
-		public function get transform():FJRect { return _transform; }
+		public function get transform():FJTransform { return _transform; }
 		public function get parent():FJGroup { return _parent; }
 		
 		public function get isActive():Boolean { return _isActive; }

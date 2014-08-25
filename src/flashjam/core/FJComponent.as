@@ -1,4 +1,5 @@
 package flashjam.core {
+	import flashjam.core.geom.FJTransform;
 	import flashjam.objects.FJDirtyFlags;
 
 	/**
@@ -19,6 +20,7 @@ package flashjam.core {
 		internal var _priorityUpdate:int = 0;
 		internal var _isConstructed:Boolean = false;
 		internal var _isActive:Boolean = true;
+		internal var _fjTransform:FJTransform;
 		
 		public function FJComponent() {
 			if (!FJDirtyFlags.INSTANCE) {
@@ -29,8 +31,13 @@ package flashjam.core {
 		///////////////////////////////////////////// OVERRIDE-METHODS
 		
 		public function onConstructed():void { }
-		public function onAdded():void { }
-		public function onRemoved():void { }
+		public function onAdded():void {
+			_fjTransform = entity._transform;
+		}
+		
+		public function onRemoved():void {
+			_fjTransform = null;
+		}
 		
 		//These are now optional, must implement ICompDraw and ICompUpdate:
 		//public function onUpdate(pTime:FJTime):void {}
@@ -66,5 +73,7 @@ package flashjam.core {
 			
 			FJDirtyFlags.INSTANCE.dirtyComponentList = true;
 		}
+		
+		public function get transform():FJTransform { return _fjTransform; }
 	}
 }
