@@ -7,7 +7,7 @@ To do:
 - quad/placeholder tests
 - PyxelEdit maps
 - TextureAtlases (texture packer)
-- add FJ whenWorldDisposed whenWorldBegan whenWorldEnd, whenWorldUpdate
+- add FJ signals whenWorldDisposed whenWorldBegan whenWorldEnd, whenWorldUpdate
 - add hitbox (depends if null, then use graphic).
 - add collision detection
 - add camera
