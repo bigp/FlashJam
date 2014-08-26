@@ -10,6 +10,7 @@ package flashjam {
 	import flashjam.core.FJTime;
 	import flashjam.core.FJWorld;
 	import flashjam.objects.FJDirtyFlags;
+	import flashjam.utils.KeyboardUtils;
 	import org.osflash.signals.Signal;
 
 	/**
@@ -22,26 +23,32 @@ package flashjam {
 		private var _root:DisplayObjectContainer;
 		private var _stage:Stage;
 		private var _dirty:FJDirtyFlags;
-		public var view:Rectangle;
-		public var doubleBuffer:FJDoubleBuffer;
-		public var time:FJTime;
-		
 		private var _onReady:Function;
-		
 		private var _worldNext:FJWorld;
 		private var _world:FJWorld;
-		
-		private var _pauseAfterRender:Boolean = false;
 		private var _isPaused:Boolean = false;
+		private var _pauseAfterRender:Boolean = false;
 		
-		public var whenDrawing:Signal;
-		public var whenUpdating:Signal;
+		public var doubleBuffer:FJDoubleBuffer;
+		public var view:Rectangle;
+		public var time:FJTime;
+		public var keys:KeyboardUtils;
+		
+		public var whenWorldDrawn:Signal;
+		public var whenWorldUpdated:Signal;
+		public var whenWorldDisposed:Signal;
+		public var whenWorldBegan:Signal;
+		public var whenWorldEnded:Signal;
+		
 		
 		public function FJ(pRoot:DisplayObjectContainer, pWorldStart:FJWorld=null, pOnReady:Function = null, pViewRect:Rectangle = null) {
 			_INSTANCE = this;
 			
-			whenDrawing = new Signal();
-			whenUpdating = new Signal();
+			whenWorldDrawn = new Signal();
+			whenWorldUpdated = new Signal();
+			whenWorldDisposed = new Signal();
+			whenWorldBegan = new Signal();
+			whenWorldEnded = new Signal();
 			
 			_root = pRoot;
 			view = pViewRect;
@@ -54,7 +61,27 @@ package flashjam {
 		public function dispose():void {
 			if (!doubleBuffer) return;
 			
+			whenWorldDrawn.removeAll();
+			whenWorldUpdated.removeAll();
+			whenWorldDisposed.removeAll();
+			whenWorldBegan.removeAll();
+			whenWorldEnded.removeAll();
+			
 			doubleBuffer.dispose();
+			
+			if (_world) {
+				_world.dispose();
+				_world = null;
+			}
+			
+			_worldNext = null;
+			_onReady = null;
+			
+			whenWorldDrawn = null;
+			whenWorldUpdated = null;
+			whenWorldDisposed = null;
+			whenWorldBegan = null;
+			whenWorldEnded = null;
 			
 			doubleBuffer = null;
 			_root = null;
@@ -78,20 +105,21 @@ package flashjam {
 			doubleBuffer = new FJDoubleBuffer(view.width, view.height);
 			_root.addChild(doubleBuffer.bitmap);
 			
-			
+			keys = new KeyboardUtils(_stage);
 			time = new FJTime(getTimer());
+			
+			if (!_worldNext && !_world) {
+				_worldNext = new FJWorld();
+				checkWorlds();
+			}
+			
+			_root.addEventListener(Event.ENTER_FRAME, onUpdate);
 			
 			//Call the custom ON_READY callback:
 			if (_onReady != null) {
 				_onReady();
 				_onReady = null;
 			}
-			
-			if (!_worldNext && !_world) {
-				_worldNext = new FJWorld();
-			}
-			
-			_root.addEventListener(Event.ENTER_FRAME, onUpdate);
 		}
 		
 		private function onUpdate(e:Event):void {
@@ -106,10 +134,10 @@ package flashjam {
 				_world.invalidate();
 				
 				_world.update( time );
-				whenUpdating.dispatch();
+				whenWorldUpdated.dispatch();
 				
 				_world.draw( time, doubleBuffer );
-				whenDrawing.dispatch();
+				whenWorldDrawn.dispatch();
 			}
 			
 			//Swap to present all changes to the screen:
@@ -128,14 +156,19 @@ package flashjam {
 			
 			if (_world) {
 				_world.onWorldEnd();
+				whenWorldEnded.dispatch();
+				
 				_world.dispose();
 				_world = null;
+				
+				whenWorldDisposed.dispatch();
 			}
 			
 			_world = _worldNext;
 			_world.onWorldBegin();
-			
 			_worldNext = null;
+			
+			whenWorldBegan.dispatch();
 		}
 		
 		
@@ -143,9 +176,9 @@ package flashjam {
 		
 		public function get stage():Stage { return _stage; }
 		
-		public static function get stage():Stage { return INSTANCE._stage; }
-		public static function get width():Number { return INSTANCE._stage.stageWidth; }
-		public static function get height():Number { return INSTANCE._stage.stageHeight; }
+		public static function get stage():Stage { return !_INSTANCE ? null : INSTANCE._stage; }
+		public static function get width():Number { return !_INSTANCE ? -1 : stage.stageWidth; }
+		public static function get height():Number { return !_INSTANCE ? -1 : stage.stageHeight; }
 		
 		public static function disposeGlobal():void {
 			_INSTANCE.dispose();

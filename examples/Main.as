@@ -1,8 +1,12 @@
 package {
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.ui.Keyboard;
+	import flashjam.basic.components.FJPhysics;
+	import flashjam.basic.FJSprite;
 	import flashjam.FJ;
 	import flashjam.core.geom.FJRect;
+	import flashjam.utils.Scaffold;
 	
 	/**
 	 * ...
@@ -10,15 +14,23 @@ package {
 	 */
 	public class Main extends Sprite {
 		private var fj:FJ;
+		private var spr:FJSprite;
 		
 		public function Main():void {
-			fj = new FJ(this);
-			fj.whenDrawing.add(onDraw);
+			fj = new FJ(this, null, onReady);
+			fj.whenWorldUpdated.add( onUpdate );
 		}
 		
-		private function onDraw():void {
-			fj.doubleBuffer.drawRect(new FJRect(Math.random() * 40, Math.random() * 40, 20, 20), 0xffff0000);
-			fj.doubleBuffer.drawRect4( Math.random() * 10, Math.random() * 30, Math.random() * 100, Math.random() * 100, 0xff0000ff);
+		private function onReady():void {
+			spr = new FJSprite();
+			spr.transform.setXY( 10, 10 );
+			fj.world.addChild( spr );
+		}
+		
+		private function onUpdate():void {
+			var thePhysics:FJPhysics = spr.physics;
+			
+			Scaffold.keysArrowsToPhysics( spr.physics );
 		}
 	}
 }

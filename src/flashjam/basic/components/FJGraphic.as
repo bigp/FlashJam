@@ -25,6 +25,10 @@ package flashjam.basic.components {
 			
 			if(pTexture!=null) {
 				texture = pTexture;
+			} else {
+				var tex:BitmapData = new BitmapData(10, 10, true, 0xffff0000);
+				tex.perlinNoise( 3, 3, 2, Math.random() * 100, true, true );
+				texture = tex;
 			}
 		}
 		

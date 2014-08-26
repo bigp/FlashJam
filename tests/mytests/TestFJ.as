@@ -32,10 +32,10 @@ package mytests {
 			ASSERT_IS_NOT_NULL(fj, "Check FJ");
 			ASSERT_IS_NOT_NULL(fj.stage, "Check stage");
 			ASSERT_IS_NOT_NULL(fj.view, "Check viewRect");
-			ASSERT_IS_NOT_NULL(fj.whenUpdating, "Check whenUpdating");
-			ASSERT_IS_NOT_NULL(fj.whenDrawing, "Check whenDrawing");
-			ASSERT_EQUAL(fj.whenUpdating.numListeners, 0, "whenUpdating total");
-			ASSERT_EQUAL(fj.whenDrawing.numListeners, 0, "whenDrawing total");
+			ASSERT_IS_NOT_NULL(fj.whenWorldUpdated, "Check whenUpdating");
+			ASSERT_IS_NOT_NULL(fj.whenWorldDrawn, "Check whenDrawing");
+			ASSERT_EQUAL(fj.whenWorldUpdated.numListeners, 0, "whenUpdating total");
+			ASSERT_EQUAL(fj.whenWorldDrawn.numListeners, 0, "whenDrawing total");
 			ASSERT_EQUAL(fj.view.width, stage.stageWidth);
 			
 			ASSERT_IS_NOT_NULL(fj.doubleBuffer, "Check doubleBuffer");

@@ -22,5 +22,10 @@ package flashjam.core.geom {
 		public function distance():Number {
 			return Math.sqrt( distanceQuick() );
 		}
+		
+		public function setXY(pX:Number, pY:Number):void {
+			x = pX;
+			y = pY;
+		}
 	}
 }
