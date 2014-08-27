@@ -105,8 +105,9 @@ package flashjam {
 			doubleBuffer = new FJDoubleBuffer(view.width, view.height);
 			_root.addChild(doubleBuffer.bitmap);
 			
-			keys = new KeyboardUtils(_stage);
 			time = new FJTime(getTimer());
+			keys = new KeyboardUtils(_stage, false);
+			//keys.frameDelayCompensation = 1;
 			
 			if (!_worldNext && !_world) {
 				_worldNext = new FJWorld();
@@ -139,6 +140,8 @@ package flashjam {
 				_world.draw( time, doubleBuffer );
 				whenWorldDrawn.dispatch();
 			}
+			
+			keys.advanceTime();
 			
 			//Swap to present all changes to the screen:
 			//Set the current backbuffer for the next drawing executions:

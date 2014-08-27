@@ -15,6 +15,8 @@ package flashjam.basic.components {
 	 * @author Pierre Chamberlain
 	 */
 	public class FJGraphic extends FJComponent implements ICompDraw {
+		public static var IS_TEXTURES_AUTOCREATED:Boolean = true;
+		
 		private static var _HELPER_POINT:Point = new Point();
 		
 		private var _rect:Rectangle;
@@ -25,7 +27,7 @@ package flashjam.basic.components {
 			
 			if(pTexture!=null) {
 				texture = pTexture;
-			} else {
+			} else if(IS_TEXTURES_AUTOCREATED) {
 				var tex:BitmapData = new BitmapData(128, 128, true, 0xffff0000);
 				tex.perlinNoise( 4, 4, 16, Math.random() * 100, true, true );
 				texture = tex;
@@ -35,6 +37,8 @@ package flashjam.basic.components {
 		/* INTERFACE flashjam.interfaces.ICompDraw */
 		
 		public function onDraw(pTime:FJTime, pBuffer:FJDoubleBuffer, pTrans:FJTransform):void {
+			if (!_texture) return;
+			
 			var bmp:BitmapData = pBuffer.getBackBuffer();
 			
 			_HELPER_POINT.x = pTrans.x;

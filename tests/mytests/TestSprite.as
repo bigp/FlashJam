@@ -24,13 +24,18 @@ package mytests {
 			var spr:FJSprite = new FJSprite();
 			
 			ASSERT_IS_NOT_NULL(spr);
-			ASSERT_IS_NOT_NULL(spr.graphic);
 			ASSERT_IS_NOT_NULL(spr.physics);
 			ASSERT_IS_NOT_NULL(spr.transform);
+			ASSERT_IS_NOT_NULL(spr.graphic);
+			
+			if (FJGraphic.IS_TEXTURES_AUTOCREATED) {
+				ASSERT_IS_NOT_NULL(spr.graphic.texture);
+			} else {
+				ASSERT_IS_NULL(spr.graphic.texture);
+			}
 		}
 		
 		public function testGraphic():void {
-			var g:FJGraphic = new FJGraphic();
 			
 			var dbl:FJDoubleBuffer = new FJDoubleBuffer(128, 128)
 			stage.addChild(dbl.bitmap);
@@ -39,8 +44,15 @@ package mytests {
 			ASSERT_IS_NOT_NULL(dbl.bitmap);
 			ASSERT_EQUAL(dbl.bitmap.width, 128);
 			ASSERT_EQUAL(dbl.bitmap.height, 128);
+			
+			var g:FJGraphic = new FJGraphic();
 			ASSERT_IS_NOT_NULL(g);
-			ASSERT_IS_NULL(g.texture);
+			
+			if (FJGraphic.IS_TEXTURES_AUTOCREATED) {
+				ASSERT_IS_NOT_NULL(g.texture);
+			} else {
+				ASSERT_IS_NULL(g.texture);
+			}
 			
 			g.texture = new BitmapData(16, 16, true, 0xff00ff00);
 			ASSERT_IS_NOT_NULL(g.texture);

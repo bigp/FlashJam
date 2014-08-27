@@ -11,7 +11,7 @@ package flashjam.basic.components {
 	 * @author Pierre Chamberlain
 	 */
 	public class FJHitBox extends FJComponent implements ICompDraw {
-		public static var DEBUG_DRAW:Boolean = true;
+		public static var DEBUG_DRAW:Boolean = false;
 		public var x:int = 0;
 		public var y:int = 0;
 		public var width:int = -1;
@@ -42,7 +42,7 @@ package flashjam.basic.components {
 		/* INTERFACE flashjam.interfaces.ICompDraw */
 		
 		public function onDraw(pTime:FJTime, pBuffer:FJDoubleBuffer, pTrans:FJTransform):void {
-			if (!graphic()) return;
+			if (!graphic() || !_graphic.texture) return;
 			
 			if (isDynamic) {
 				width = _graphic.texture.width;

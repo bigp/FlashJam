@@ -5,11 +5,11 @@
     <movie outputType="Application" />
     <movie input="" />
     <movie path="bin\FlashJam.swf" />
-    <movie fps="60" />
-    <movie width="320" />
-    <movie height="240" />
-    <movie version="10" />
-    <movie minorVersion="1" />
+    <movie fps="30" />
+    <movie width="420" />
+    <movie height="380" />
+    <movie version="12" />
+    <movie minorVersion="0" />
     <movie platform="Flash Player" />
     <movie background="#FFFFFF" />
   </output>

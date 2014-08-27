@@ -78,11 +78,15 @@ package mytests {
 			ASSERT_IS_NOT_NULL( spr.getComponent( FJGraphic ), "sprite has graphic" );
 			ASSERT_IS_NOT_NULL( spr.getComponent( FJPhysics ), "sprite has physics" );
 			
-			
 			ASSERT_EQUAL(theWorld.update(time), 1, "num of updates pre");
 			theWorld.invalidate();
 			ASSERT_EQUAL(theWorld.update(time), 2, "num of updates post");
-			ASSERT_EQUAL(theWorld.draw(time, draw), 1, "num of draws 2");
+			
+			if(FJGraphic.IS_TEXTURES_AUTOCREATED) {
+				ASSERT_EQUAL(theWorld.draw(time, draw), 3, "num of draws 2");
+			} else {
+				ASSERT_EQUAL(theWorld.draw(time, draw), 2, "num of draws 2");
+			}
 		}
 	}
 }

@@ -19,7 +19,9 @@ package flashjam.utils
 		private var _keyTime:int = 1;
 		private var _stage:Stage;
 		
-		public function KeyboardUtils(pStage:Stage) 
+		public var frameDelayCompensation:int = 0;
+		
+		public function KeyboardUtils(pStage:Stage, pAutoUpdates:Boolean=true) 
 		{
 			_stage = pStage;
 			_keysDown = new Dictionary();
@@ -27,7 +29,10 @@ package flashjam.utils
 			
 			_stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			_stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-			_stage.addEventListener(Event.ENTER_FRAME, advanceTime);
+			
+			if(pAutoUpdates) {
+				_stage.addEventListener(Event.ENTER_FRAME, advanceTime, false, -1);
+			}
 		}
 		
 		public static function get INSTANCE():KeyboardUtils {
@@ -39,6 +44,8 @@ package flashjam.utils
 				
 			}
 			
+			trace("Using KeyboardUtils global instance somewhere...");
+			
 			return _INSTANCE;
 		}
 		
@@ -47,17 +54,17 @@ package flashjam.utils
 			var prevKeyTime:int = _keysDown[e.keyCode];
 			if (prevKeyTime > 0) return;
 			
-			_keysDown[e.keyCode] = _keyTime;
+			_keysDown[e.keyCode] = _keyTime + frameDelayCompensation;
 			
 			var callback:Function = _keysCallback[e.keyCode];
 			if (callback!=null) callback();
 		}
 		
 		private function onKeyUp(e:KeyboardEvent):void {
-			_keysDown[e.keyCode] = -_keyTime;
+			_keysDown[e.keyCode] = -(_keyTime+frameDelayCompensation);
 		}
 		
-		public function advanceTime(e:Event=null):void {
+		public function advanceTime(e:Event = null):void {
 			_keyTime++;
 		}
 		

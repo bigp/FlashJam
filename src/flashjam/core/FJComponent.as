@@ -1,6 +1,7 @@
 package flashjam.core {
 	import flashjam.core.geom.FJTransform;
 	import flashjam.objects.FJDirtyFlags;
+	import flashjam.utils.ClassUtils;
 
 	/**
 	 * ...
@@ -73,5 +74,10 @@ package flashjam.core {
 		}
 		
 		public function get transform():FJTransform { return _fjTransform; }
+		
+		public function toString():String {
+			if (!_entity) return "[null::" + ClassUtils.nameOf(this) + "]";
+			return "[" + _entity.toID() + "~" + ClassUtils.nameOf(this) + "]";
+		}
 	}
 }
