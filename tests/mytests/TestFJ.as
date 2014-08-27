@@ -81,7 +81,7 @@ package mytests {
 			
 			var dbl:FJDoubleBuffer = new FJDoubleBuffer(128, 128, bmp, false);
 			
-			dbl.drawRect( new FJRect(4, 4, 10, 20), 0xffff0000 );
+			dbl.drawFJRect( new FJRect(4, 4, 10, 20), 0xffff0000 );
 			ASSERT_NOT_EQUAL( bmp.bitmapData.getPixel(10, 10).toString(16), int(0xff0000).toString(16) );
 			
 			dbl.swap();

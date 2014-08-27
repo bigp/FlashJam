@@ -78,14 +78,26 @@ package flashjam.core {
 			_helperPointZero = null;
 		}
 		
+		
+		
+		public function drawRect( pRect:Rectangle, pColor:uint ):void {
+			_helperPoint.x = pRect.x;
+			_helperPoint.y = pRect.y;
+			
+			//Draw to the scratch buffer first (to preserve transparency, even if back/front are non-transparent)
+			_scratchBuffer.fillRect( pRect, pColor );
+			_backBuffer.copyPixels( _scratchBuffer, pRect, _helperPoint, null, null, true );
+			_scratchBuffer.fillRect( pRect, 0x00000000 );
+		}
+		
 		/**
 		 * Mostly used for testing purpose. Provide a rectangle / entity, and it'll draw a color of its' bounds.
 		 * @param	pRect
 		 * @param	pColor
 		 */
-		public function drawRect( pRect:FJRect, pColor:uint ):void {
+		public function drawFJRect( pRect:FJRect, pColor:uint ):void {
 			pRect.copyToRect( _helperFillRect );
-			_backBuffer.fillRect( _helperFillRect, pColor );
+			drawRect( _helperFillRect, pColor );
 		}
 		
 		public function drawRect4(pX:Number, pY:Number, pWidth:Number, pHeight:Number, pColor:uint):void {
@@ -94,12 +106,7 @@ package flashjam.core {
 			_helperFillRect.width = pWidth;
 			_helperFillRect.height = pHeight;
 			
-			_helperPoint.x = pX;
-			_helperPoint.y = pY;
-			
-			_scratchBuffer.fillRect( _helperFillRect, pColor );
-			_backBuffer.copyPixels( _scratchBuffer, _helperFillRect, _helperPoint, null, null, true );
-			_scratchBuffer.fillRect( _helperFillRect, 0x00000000 );
+			drawRect( _helperFillRect, pColor );
 		}
 	}
 }
