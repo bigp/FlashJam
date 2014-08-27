@@ -3,7 +3,7 @@ To do:
 
 **Aug. 25th, 2014**
 
-- world dispose (add signal)
+- <del>world dispose (add signal)</del>
 - quad/placeholder tests
 - PyxelEdit maps
 - TextureAtlases (texture packer)
