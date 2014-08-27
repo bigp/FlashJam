@@ -17,7 +17,7 @@ package flashjam.basic.components {
 		public var width:int = -1;
 		public var height:int = -1;
 		public var isDynamic:Boolean = true;
-		public var debugColor:uint = 0xaaff0000;
+		public var debugColor:uint = 0xccff0000;
 		
 		private var _graphic:FJGraphic;
 		
@@ -49,7 +49,6 @@ package flashjam.basic.components {
 				height = _graphic.texture.height;
 			}
 			
-			trace("Draw..." + width + " : "  + height);
 			pBuffer.drawRect4(pTrans.x + x, pTrans.y + y, width, height, debugColor);
 		}
 		
