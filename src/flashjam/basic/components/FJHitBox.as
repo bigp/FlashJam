@@ -1,4 +1,5 @@
 package flashjam.basic.components {
+	import flash.geom.Rectangle;
 	import flashjam.core.geom.FJTransform;
 	import flashjam.core.FJComponent;
 	import flashjam.core.FJDoubleBuffer;
@@ -11,9 +12,11 @@ package flashjam.basic.components {
 	 * @author Pierre Chamberlain
 	 */
 	public class FJHitBox extends FJComponent implements ICompDraw {
+		private static var _DEBUG_DRAW_RECT:Rectangle = new Rectangle();
 		public static var DEBUG_DRAW:Boolean = false;
-		public var x:int = 0;
-		public var y:int = 0;
+		
+		public var offsetX:int = 0;
+		public var offsetY:int = 0;
 		public var width:int = -1;
 		public var height:int = -1;
 		public var isDynamic:Boolean = true;
@@ -34,8 +37,8 @@ package flashjam.basic.components {
 		}
 		
 		public function setSize(pWidth:int, pHeight:int):void {
-			width = pWidth;
-			height = pHeight;
+			width = pWidth<0 ? _graphic.texture.width + pWidth : pWidth;
+			height = pHeight<0 ? _graphic.texture.height + height : pHeight;
 			isDynamic = false;
 		}
 		
@@ -49,7 +52,12 @@ package flashjam.basic.components {
 				height = _graphic.texture.height;
 			}
 			
-			pBuffer.drawRect4(pTrans.x + x, pTrans.y + y, width, height, debugColor);
+			_DEBUG_DRAW_RECT.x = pTrans.x + offsetX;
+			_DEBUG_DRAW_RECT.y = pTrans.y + offsetY;
+			_DEBUG_DRAW_RECT.width = this.width;
+			_DEBUG_DRAW_RECT.height = this.height;
+			
+			pBuffer.drawRect(_DEBUG_DRAW_RECT, debugColor);
 		}
 		
 		public function get canDraw():Boolean { return _graphic!=null; }
