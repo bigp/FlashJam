@@ -4,10 +4,10 @@ To do:
 **Aug. 25th, 2014**
 
 - <del>world dispose (add signal)</del>
+- <del>add FJ signals whenWorldDisposed whenWorldBegan whenWorldEnd, whenWorldUpdate</del>
 - quad/placeholder tests
 - PyxelEdit maps
 - TextureAtlases (texture packer)
-- add FJ signals whenWorldDisposed whenWorldBegan whenWorldEnd, whenWorldUpdate
 - add hitbox (depends if null, then use graphic).
 - add collision detection
 - add camera
