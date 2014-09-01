@@ -83,6 +83,9 @@ package flashjam {
 			whenWorldBegan = null;
 			whenWorldEnded = null;
 			
+			if(_INSTANCE==this) {
+				_INSTANCE = null;
+			}
 			doubleBuffer = null;
 			_root = null;
 			_stage = null;

@@ -1,15 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SWCProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <FlexBinPath />
-  <FlashBinPath />
+  <FlexBinPath>.\bin\FlashJam.swc</FlexBinPath>
+  <FlashBinPath>.\bin\FlashJam.flash.swc</FlashBinPath>
   <FlexIncludeASI>false</FlexIncludeASI>
   <MakeCS3>false</MakeCS3>
   <MakeMXI>false</MakeMXI>
   <IntegrateAsDoc>true</IntegrateAsDoc>
-  <AppendPaths>true</AppendPaths>
   <LaunchAEM>false</LaunchAEM>
   <MXPIncludeASI>false</MXPIncludeASI>
-  <Flex_IgnoreClasses />
-  <CS3_IgnoreClasses />
+  <Flex_IgnoreClasses>
+    <string>examples\main.as</string>
+    <string>tests\mytests\testdisplaylist.as</string>
+    <string>tests\mytests\testentity.as</string>
+    <string>tests\mytests\testfj.as</string>
+    <string>tests\mytests\testgeom.as</string>
+    <string>tests\mytests\testsprite.as</string>
+    <string>tests\mytests\testworld.as</string>
+    <string>tests\testsuite.as</string>
+  </Flex_IgnoreClasses>
+  <CS3_IgnoreClasses>
+    <string>examples\main.as</string>
+    <string>tests\mytests\testdisplaylist.as</string>
+    <string>tests\mytests\testentity.as</string>
+    <string>tests\mytests\testfj.as</string>
+    <string>tests\mytests\testgeom.as</string>
+    <string>tests\mytests\testsprite.as</string>
+    <string>tests\mytests\testworld.as</string>
+    <string>tests\testsuite.as</string>
+  </CS3_IgnoreClasses>
   <CS3_PreviewType>None</CS3_PreviewType>
 </SWCProject>

@@ -25,6 +25,7 @@ package  {
 			addChild(new TestEntity());
 			addChild(new TestWorld());
 			addChild(new TestSprite());
+			addChild(new TestUtils());
 		}
 		
 		private function onTestAdded(e:Event):void {
@@ -32,6 +33,5 @@ package  {
 			FJDirtyFlags.INSTANCE = null;
 			FJ.INSTANCE.dispose();
 		}
-		
 	}
 }

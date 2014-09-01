@@ -13,16 +13,16 @@ package flashjam.utils
 	public class KeyboardUtils 
 	{
 		private static var _INSTANCE:KeyboardUtils;
+		public static var STAGE:Stage;
 		
+		private var _stage:Stage;
+		private var _keyTime:int = 1;
 		private var _keysDown:Dictionary;
 		private var _keysCallback:Dictionary;
-		private var _keyTime:int = 1;
-		private var _stage:Stage;
 		
 		public var frameDelayCompensation:int = 0;
 		
-		public function KeyboardUtils(pStage:Stage, pAutoUpdates:Boolean=true) 
-		{
+		public function KeyboardUtils(pStage:Stage, pAutoUpdates:Boolean=true) {
 			_stage = pStage;
 			_keysDown = new Dictionary();
 			_keysCallback = new Dictionary();
@@ -35,16 +35,34 @@ package flashjam.utils
 			}
 		}
 		
+		public function dispose():void {
+			if (_INSTANCE == this) {
+				_INSTANCE = null;
+			}
+			
+			_keysDown = null;
+			_keysCallback = null;
+			_stage = null;
+		}
+		
+		public function dispatchKey( pKey:uint, pOnDown:Boolean, pCTRL:Boolean=false, pALT:Boolean=false, pSHIFT:Boolean=false ):Boolean {
+			if (!_stage) return false;
+			var type:String = pOnDown ? KeyboardEvent.KEY_DOWN : KeyboardEvent.KEY_UP;
+			var kEvent:KeyboardEvent = new KeyboardEvent(type, true, false, 0, pKey, 0, pCTRL, pALT, pSHIFT);
+			_stage.dispatchEvent( kEvent );
+			return true;
+		}
+		
 		public static function get INSTANCE():KeyboardUtils {
 			if (!_INSTANCE) {
-				if(!FJ.stage) {
-					throw new Error("Registry.STAGE is not ready yet.");
+				if(!STAGE) {
+					throw new Error("static var STAGE is not set yet.");
 				}
-				_INSTANCE = new KeyboardUtils( FJ.stage );
+				_INSTANCE = new KeyboardUtils( STAGE );
 				
 			}
 			
-			trace("Using KeyboardUtils global instance somewhere...");
+			Log.__INFO("Using KeyboardUtils global instance somewhere...");
 			
 			return _INSTANCE;
 		}

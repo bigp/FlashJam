@@ -1,4 +1,5 @@
 package flashjam.basic.components {
+	import flash.display.BitmapData;
 	import flash.geom.Rectangle;
 	import flashjam.core.geom.FJTransform;
 	import flashjam.core.FJComponent;
@@ -36,9 +37,16 @@ package flashjam.basic.components {
 			
 		}
 		
-		public function setSize(pWidth:int, pHeight:int):void {
-			width = pWidth<0 ? _graphic.texture.width + pWidth : pWidth;
-			height = pHeight<0 ? _graphic.texture.height + height : pHeight;
+		public function setSize(pWidth:int, pHeight:int, pAutoOffset:Boolean=true):void {
+			width = pWidth < 0 ? _graphic.texture.width + pWidth : pWidth;
+			height = pHeight < 0 ? _graphic.texture.height + height : pHeight;
+			
+			var theGraphic:FJGraphic = graphic();
+			if (pAutoOffset && theGraphic) {
+				var bmp:BitmapData = theGraphic.texture;
+				this.offsetX = (bmp.width - width) >> 1;
+				this.offsetY = (bmp.height - height) >> 1;
+			}
 			isDynamic = false;
 		}
 		

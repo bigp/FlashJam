@@ -7,6 +7,7 @@ package {
 	import flashjam.FJ;
 	import flashjam.core.geom.FJRect;
 	import flashjam.utils.Scaffold;
+	import net.hires.debug.Stats;
 	
 	/**
 	 * ...
@@ -28,8 +29,10 @@ package {
 		private function onReady():void {
 			spr = new FJSprite();
 			spr.transform.setXY( 10, 10 );
+			spr.hitbox.setSize( 50, 80, true );
 			fj.world.addChild( spr );
 			
+			addChild( new Stats() );
 			originaFPS = stage.frameRate;
 		}
 		
